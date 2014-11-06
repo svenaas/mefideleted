@@ -34,7 +34,19 @@ Show what the library does as concisely as possible, developers should be able t
 
 ## Deployment
 
-[TODO]
+After you've created your application in Heroku you'll need to add Heroku as a Git remote from your working directory: 
+
+     heroku git:remote -a mefideleted
+
+If you need Heroku addons you can add them at this time as well: 
+
+    heroku addons:add scheduler
+
+    heroku addons:add redistogo
+
+In order to authenticate and post to Twitter this app needs to present several keys. Rather than store them in the code (which would be insecure) this app is written to depend on finding these keys as the server environment variables `CONSUMER_KEY`, `CONSUMER_SECRET`, `OAUTH_TOKEN`, and `OAUTH_TOKEN_SECRET`. You'll find the values of these keys at dev.twitter.com for your particular application. You set them in Heroku like this:
+
+    heroku config:set CONSUMER_KEY=[your key value]
 
 ## References
 
