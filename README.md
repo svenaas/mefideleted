@@ -26,7 +26,7 @@ Log into Twitter using the account that the bot will use. Then sign into https:/
 
 ### Twitter Application keys
 
-You'll find the keys `CONSUMER_KEY` and `CONSUMER_SECRET` in the "Keys and Access Tokens" tab of your app's page at https://apps.twitter.com/. The other two keys you need, `OAUTH_TOKEN` and `OAUTH_TOKEN_SECRET` won't get generated until you set the necessary privilige level for your app and press the "Create my access token" button at the bottom of the "Keys and Access Tokens" tab.
+You'll find the keys `CONSUMER_KEY` and `CONSUMER_SECRET` in the "Keys and Access Tokens" tab of your app's page at https://apps.twitter.com/. The other two keys you need, `OAUTH_TOKEN` and `OAUTH_TOKEN_SECRET`, won't get generated until you set the necessary privilige level for your app and press the "Create my access token" button at the bottom of the "Keys and Access Tokens" tab.
 
 ### Heroku Account
 
