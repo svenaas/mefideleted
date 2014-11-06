@@ -7,7 +7,9 @@ This bot was written to run at Heroku and may be used as a simple example or sta
 ## Requirements for Deploying Something Like This
 
 1) Twitter account
+
 2) Twitter application
+
 3) Heroku account
 
 ### Twitter Account
