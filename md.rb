@@ -40,11 +40,6 @@ def tweeted!(post_id)
 	return true
 end
 
-# Get the 20 newest followers, ordered from newest to oldest
-def followers
-  @client.followers.take(20)
-end
-
 # Print list of most recent deletion resons
 def list	
 	reasons = deletion_reasons
@@ -70,9 +65,6 @@ def run
 			end
 		end
 	end
-
-	# Follow our latest followers
-  followers.reverse.each { |f| @client.follow(f) }
 end	
 
 # Print usage instructions
@@ -89,8 +81,6 @@ elsif ARGV[0] == 'run'
   run
 elsif ARGV[0] == 'list'
   list
-elsif ARGV[0] == 'followers'
-  followers.each {|f| puts "@#{f.username}"}
 else 
   usage
 end
