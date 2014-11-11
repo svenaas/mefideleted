@@ -12,7 +12,9 @@ This bot was written to run at Heroku and may be used as a simple example or sta
 
 3) Twitter application keys
 
-4) Heroku account
+4) TwitLonger API Key
+
+5) Heroku account
 
 ### Twitter Account
 
@@ -27,6 +29,10 @@ Log into Twitter using the account that the bot will use. Then sign into https:/
 ### Twitter Application keys
 
 You'll find the keys `CONSUMER_KEY` and `CONSUMER_SECRET` in the "Keys and Access Tokens" tab of your app's page at https://apps.twitter.com/. The other two keys you need, `OAUTH_TOKEN` and `OAUTH_TOKEN_SECRET`, won't get generated until you set the necessary privilige level for your app and press the "Create my access token" button at the bottom of the "Keys and Access Tokens" tab.
+
+### TwitLonger API key
+
+Some of the messages this app posts are longer than 140 characters. I chose to use TwitLonger when necessary for these longer messages. API keys can be requested at http://api.twitlonger.com/. 
 
 ### Heroku Account
 
@@ -53,6 +59,8 @@ If you need Heroku addons you can add them at this time as well:
 In order to authenticate and post to Twitter this app needs to present several keys. Rather than store them in the code (which would be insecure) this app is written to depend on finding these keys as the server environment variables `CONSUMER_KEY`, `CONSUMER_SECRET`, `OAUTH_TOKEN`, and `OAUTH_TOKEN_SECRET`. You'll find the values of these keys at https://apps.twitter.com/ for your particular application. You set them in Heroku like this:
 
     heroku config:set CONSUMER_KEY=[your key value]
+
+We do the same thing with the TwitLonger API key with the environment variable `TWITLONGER_API_KEY`.
 
 ## References
 

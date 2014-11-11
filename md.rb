@@ -51,6 +51,18 @@ def tweet(message)
 	return true
 end
 
+def twitlonger(message)
+	# http://api.twitlonger.com/docs/endpoints
+	url = URI.parse('http://api.twitlonger.com/2/posts')
+    request.content_type = 'application/json'
+    request.body = '{"id":5,"amount":5.0,"paid":true}'	
+    request['X-API-KEY'] = ENV["TWITLONGER_API_KEY"]
+    request['X-Auth-Service-Provider'] = 'https://api.twitter.com/1.1/account/verify_credentials.json'
+    request['X-Verify-Credentials-Authorization'] = '' #TODO: Deal with OAUTH from Twitter
+    # TODO: Submit message to shorten as form or JSON data (not sure which yet)
+	response = Net::HTTP::Post.new(url.path)
+end
+
 def run
 	reasons = deletion_reasons
 
@@ -71,7 +83,6 @@ def usage
   puts "Usage:"
   puts "  ea.rb run        - normal execution      (may post to Twitter)"
   puts "  ea.rb list       - list deletion reasons"
-  puts "  ea.rb followers  - list 20 newest followers"
 end
 
 if ARGV.size != 1
