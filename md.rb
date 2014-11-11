@@ -12,8 +12,7 @@ ATOM_URL = 'http://mefideleted.blogspot.com/feeds/posts/default'
   config.access_token_secret = ENV["OAUTH_TOKEN_SECRET"]
 end
 
-uri   = URI.parse(ENV["REDISTOGO_URL"])
-REDIS = Redis.new(:url => ENV['REDISTOGO_URL'])
+REDIS = Redis.new(:url => URI.parse(ENV["REDISTOGO_URL"]))
 
 # Get the latest deletion reasons from the MeFi Deleted blog's feed
 def deletion_reasons 
