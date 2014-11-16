@@ -7,6 +7,7 @@ require "openssl"
 require "base64"
 require "securerandom"
 require 'cgi'
+require 'json'
 
 ATOM_URL = 'http://mefideleted.blogspot.com/feeds/posts/default'
 
@@ -47,11 +48,12 @@ end
 # Print list of most recent deletion resons
 def list	
 	reasons = deletion_reasons
-	reasons.keys.sort.each {|post_id| puts "#{post_id}}: #{reasons[post_id]}"}
+	reasons.keys.sort.each {|post_id| puts "#{post_id} #{tweeted?(post_id) ? '(tweeted):   ' : '(not tweeted):'} #{reasons[post_id]}"}
 end
 
 def tweet(message)
 	# TODO: Add exception handling here
+	message = twitlonger(message) if message.length > 140
 	puts "Tweet: #{message}"
 	return true
 end
@@ -99,8 +101,7 @@ def twitlonger(message)
 
 	response = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(request)}
 
-	require 'pp'
-	pp response.body
+	JSON.parse(response.body)["tweet_content"]
 end
 
 # See http://stackoverflow.com/a/4758649
@@ -138,8 +139,6 @@ elsif ARGV[0] == 'run'
   run
 elsif ARGV[0] == 'list'
   list
-elsif ARGV[0] == 'test'
-  twitlonger("Test #{Time.now.to_i.to_s}")
 else  
   usage
 end
