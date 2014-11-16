@@ -62,36 +62,30 @@ def twitlonger(message)
 
 	request = Net::HTTP::Post.new(uri.path)
 
-    request['X-API-KEY'] = ENV["TWITLONGER_API_KEY"]
-    request['X-AUTH-SERVICE-PROVIDER'] = 'https://api.twitter.com/1.1/account/verify_credentials.json'
+  request['X-API-KEY'] = ENV["TWITLONGER_API_KEY"]
+  request['X-AUTH-SERVICE-PROVIDER'] = 'https://api.twitter.com/1.1/account/verify_credentials.json'
 
-    # Oh, the fun that is OAuth:
-    oauth_timestamp = Time.now.to_i.to_s
-    oauth_nonce = SecureRandom.hex(16)
+  # Oh, the fun that is OAuth:
+  oauth_timestamp = Time.now.to_i.to_s
+  oauth_nonce = SecureRandom.hex(16)
 
-    key         = ENV["CONSUMER_SECRET"] + '&' + ENV["OAUTH_TOKEN_SECRET"]
+  key         = ENV["CONSUMER_SECRET"] + '&' + ENV["OAUTH_TOKEN_SECRET"]
 
-    params      = 'oauth_consumer_key='     + ENV["CONSUMER_KEY"]  + '&' + 
-                  'oauth_nonce='            + oauth_nonce          + '&' + 
-                  'oauth_signature_method=' + 'HMAC-SHA1'          + '&' + 
-                  'oauth_timestamp='        + oauth_timestamp      + '&' + 
-                  'oauth_token='            + ENV["OAUTH_TOKEN"]   + '&' + 
-                  'oauth_version='          + '1.0' 
+  params      = 'oauth_consumer_key='     + ENV["CONSUMER_KEY"]  + '&' + 
+                'oauth_nonce='            + oauth_nonce          + '&' + 
+                'oauth_signature_method=' + 'HMAC-SHA1'          + '&' + 
+                'oauth_timestamp='        + oauth_timestamp      + '&' + 
+                'oauth_token='            + ENV["OAUTH_TOKEN"]   + '&' + 
+                'oauth_version='          + '1.0'
 
-	base_string = 'POST' + '&' + CGI::escape(uri.to_s) + '&' + CGI::escape(params)
-    oauth_signature = sign(key, base_string)
+	base_string_uri = URI.parse('https://api.twitter.com/1.1/account/verify_credentials.json')
 
-    puts
-    puts "key:  " + key
-    puts
-    puts "base: " + base_string
-    puts
-    puts "sig:  " + oauth_signature
-    puts
+	base_string = 'GET' + '&' + CGI::escape(base_string_uri.to_s) + '&' + CGI::escape(params)
+  oauth_signature = sign(key, base_string)
 
-    auth_header = 
-    	'OAuth ' + 
-    	'oauth_consumer_key="'     + ENV["CONSUMER_KEY"]          + '", ' +
+  auth_header = 
+  	'OAuth ' + 
+  	'oauth_consumer_key="'     + ENV["CONSUMER_KEY"]          + '", ' +
 		'oauth_nonce="'            + oauth_nonce                  + '", ' +
 		'oauth_signature="'        + CGI::escape(oauth_signature) + '", ' +
 		'oauth_signature_method="HMAC-SHA1", ' +
@@ -101,22 +95,11 @@ def twitlonger(message)
 
 	request['X-VERIFY-CREDENTIALS-AUTHORIZATION'] = auth_header
 
-    request.set_form_data("content" => message)
+  request.set_form_data("content" => message)
 
-    require 'pp'
-    puts "\nREQUEST\n\n"
-    pp request
+	response = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(request)}
 
-	#response = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(request)}
-	http = Net::HTTP.new(uri.hostname, uri.port)
-
-	http.set_debug_output $stderr
-
-	response = http.start {|http| http.request(request)}
-
-	puts "\nRESPONSE\n\n"
-	pp response
-	puts "\nRESPONSE BODY\n\n"
+	require 'pp'
 	pp response.body
 end
 
@@ -125,113 +108,6 @@ def sign( key, base_string )
   digest = OpenSSL::Digest.new( 'sha1' )
   hmac = OpenSSL::HMAC.digest( digest, key, base_string  )
   Base64.encode64( hmac ).chomp.gsub( /\n/, '' )
-end
-
-# def twitlonger_test
-# 	# http://api.twitlonger.com/docs/endpoints
-# 	uri = URI.parse('http://api.twitlonger.com/2/posts/n_1siespo')
-# 	request = Net::HTTP::Get.new(uri.path)
-#     request['X-API-KEY'] = ENV["TWITLONGER_API_KEY"]
-# 	response = Net::HTTP.start(uri.hostname, uri.port) {|http| http.request(request)}
-# 	require 'pp'
-# 	pp response
-# 	pp response.body
-# end
-
-def credentials_test
-	uri = URI.parse('https://api.twitter.com/1.1/account/verify_credentials.json')
-	
-	request = Net::HTTP::Get.new(uri.path)
-
-    # Oh, the fun that is OAuth:
-    oauth_timestamp = Time.now.to_i.to_s
-    oauth_nonce = SecureRandom.hex(16)
-
-    key         = ENV["CONSUMER_SECRET"] + '&' + ENV["OAUTH_TOKEN_SECRET"]
-
-    params      = 'oauth_consumer_key='     + ENV["CONSUMER_KEY"] + '&' + 
-                  'oauth_nonce='            + oauth_nonce         + '&' + 
-                  'oauth_signature_method=' + 'HMAC-SHA1'         + '&' + 
-                  'oauth_timestamp='        + oauth_timestamp     + '&' + 
-                  'oauth_token='            + ENV["OAUTH_TOKEN"]  + '&' + 
-                  'oauth_version='          + '1.0'                
-
-	base_string = 'GET' + '&' + CGI::escape(uri.to_s) + '&' + CGI::escape(params)
-    oauth_signature = sign(key, base_string)
-
-    auth_header = 
-    	'OAuth ' + 
-    	'oauth_consumer_key="'     + ENV["CONSUMER_KEY"]          + '", ' +
-		'oauth_nonce="'            + oauth_nonce                  + '", ' +
-		'oauth_signature="'        + CGI::escape(oauth_signature) + '", ' +
-		'oauth_signature_method="HMAC-SHA1", ' +
-		'oauth_timestamp="'        + oauth_timestamp              + '", ' + 
-		'oauth_token="'            + ENV["OAUTH_TOKEN"]           + '", ' +
-		'oauth_version="1.0"'     
-
-	request['Authorization'] = auth_header 
-
-	http = Net::HTTP.new(uri.hostname, uri.port)
-	http.use_ssl = true
-	http.verify_mode = OpenSSL::SSL::VERIFY_PEER
-	#http.ssl_version = :SSLv3
-
-	http.set_debug_output $stderr
-	response = http.start {|http| http.request(request)}
-
-	require 'pp'
-	pp response
-	pp response.body
-end
-
-def post_test(message)
-	uri = URI.parse('https://api.twitter.com/1.1/statuses/update.json')
-
-	request = Net::HTTP::Post.new(uri.path)
-
-    # Oh, the fun that is OAuth:
-    oauth_timestamp = Time.now.to_i.to_s
-    oauth_nonce = SecureRandom.hex(16)
-
-    key         = ENV["CONSUMER_SECRET"] + '&' + ENV["OAUTH_TOKEN_SECRET"]
-
-    params      = 'oauth_consumer_key='     + ENV["CONSUMER_KEY"] + '&' + 
-                  'oauth_nonce='            + oauth_nonce         + '&' + 
-                  'oauth_signature_method=' + 'HMAC-SHA1'         + '&' + 
-                  'oauth_timestamp='        + oauth_timestamp     + '&' + 
-                  'oauth_token='            + ENV["OAUTH_TOKEN"]  + '&' + 
-                  'oauth_version='          + '1.0'               + '&' +
-                  'status='                 + URI::encode(message)
-
-	base_string = 'POST' + '&' + CGI::escape(uri.to_s) + '&' + CGI::escape(params)
-    oauth_signature = sign(key, base_string)
-
-    auth_header = 
-    	'OAuth ' + 
-    	'oauth_consumer_key="'     + ENV["CONSUMER_KEY"]          + '", ' +
-		'oauth_nonce="'            + oauth_nonce                  + '", ' +
-		'oauth_signature="'        + CGI::escape(oauth_signature) + '", ' +
-		'oauth_signature_method="HMAC-SHA1", ' +
-		'oauth_timestamp="'        + oauth_timestamp              + '", ' + 
-		'oauth_token="'            + ENV["OAUTH_TOKEN"]           + '", ' +
-		'oauth_version="1.0"'    
-
-	request['Authorization'] = auth_header
-
-    request.set_form_data("status" => message)
-
-    require 'pp'
-
-	http = Net::HTTP.new(uri.hostname, uri.port)
-	http.use_ssl = true
-	http.verify_mode = OpenSSL::SSL::VERIFY_PEER	
-	http.set_debug_output $stderr
-	response = http.start {|http| http.request(request)}
-
-	puts "\nRESPONSE\n\n"
-	pp response
-	puts "\nRESPONSE BODY\n\n"
-	pp response.body
 end
 
 def run
@@ -263,11 +139,7 @@ elsif ARGV[0] == 'run'
 elsif ARGV[0] == 'list'
   list
 elsif ARGV[0] == 'test'
-  twitlonger("Test#{Time.now.to_i.to_s}")
-elsif ARGV[0] == 'ctest'
-  credentials_test
-elsif ARGV[0] == 'ptest'
-  post_test("Test #{Time.now.to_i.to_s}")
+  twitlonger("Test #{Time.now.to_i.to_s}")
 else  
   usage
 end
