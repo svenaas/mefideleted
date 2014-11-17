@@ -40,9 +40,13 @@ end
 
 # Records the tweeting of the deletion reason for the given post_id
 def tweeted!(post_id)
-  # TODO: Add exception handling here
-  REDIS.set post_id, true
-  return true
+  begin
+    REDIS.set post_id, true
+    return true
+  rescue Exception => e
+    puts "An unexpected exception occured on #tweeted!: #{e}"
+    raise e
+  end
 end
 
 # Print list of most recent deletion resons
