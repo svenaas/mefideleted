@@ -1,30 +1,30 @@
 ## MeFi Deleted
 
-A simple Twitter bot written to tweet MetaFilter post deletion reasons at @mefideleted
+A simple Twitter bot written to tweet MetaFilter post deletion reasons at [@mefideleted](https://twitter.com/mefideleted)
 
-This bot was written to run at Heroku and may be used as a simple example or starting point for other projects.
+This bot was written to run at [Heroku](http://heroku.com/) and may be used as a simple example or starting point for other projects.
 
 ## Requirements for Deploying Something Like This
 
-1) Twitter account
+1) [Twitter account](#twitter-account)
 
-2) Twitter application
+2) [Twitter application](#twitter-application)
 
-3) Twitter application keys
+3) [Twitter application keys](#twitter-application-keys)
 
-4) TwitLonger API Key
+4) [TwitLonger API Key](#twitlonger-api-key)
 
-5) Heroku account
+5) [Heroku account](#heroku-account)
 
 ### Twitter Account
 
-You'll probaby want a new Twitter account for your bot.
+You'll probaby want a _new_ Twitter account for your bot.
 
 ### Twitter Application
 
 Log into Twitter using the account that the bot will use. Then sign into https://dev.twitter.com/ and then register your new Twitter appication at https://apps.twitter.com/.
 
-**Note:** If your bot is going to post then you're going to need to give your application write access to the Twitter account, and as of this writing (2014) Twitter won't let you do this unless your Twitter account has a mobile phone number associated with it. Twitter furthermore won't let you associate a mobile phone number that's already associated with another Twitter account. Catch-22! Fortunately, you can request write access via http://support.twitter.com/ — do this from your bot's Twitter account, but tell them who you really are and let them know you're not to anything underhanded.
+**Note:** If your bot is going to post then you're going to need to give your application write access to the Twitter account, and as of this writing (2014) Twitter won't let you do this unless your Twitter account has a mobile phone number associated with it. Twitter probably won't let you associate a mobile phone number that's already associated with another Twitter account. Catch-22! Fortunately, you can request write access via http://support.twitter.com/ — do this from your bot's Twitter account, but tell them who you really are and let them know you're not to anything underhanded.
 
 ### Twitter Application keys
 
@@ -36,19 +36,17 @@ Some of the messages this app posts are longer than 140 characters. I chose to u
 
 ### Heroku Account
 
-In my use this application does not require more than a free tier of service from Heroku or associated service providers, but your use may differ. 
+In my use this application does not require more than a free tier of service from Heroku, but your use may differ. This app also uses two Heroku add-ons, both also at their free tiers:
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+- [Redis To Go](https://addons.heroku.com/redistogo) as a simple key/value data store.
 
-## Motivation
-
-[TODO]
+- [Heroku Scheduler](https://addons.heroku.com/scheduler) to run the app every 10 minutes.
 
 ## Deployment
 
 After you've created your application in Heroku you'll need to add Heroku as a Git remote from your working directory: 
 
-     heroku git:remote -a mefideleted
+    heroku git:remote -a mefideleted
 
 If you need Heroku addons you can add them at this time as well: 
 
@@ -60,12 +58,8 @@ In order to authenticate and post to Twitter this app needs to present several k
 
     heroku config:set CONSUMER_KEY=[your key value]
 
-We do the same thing with the TwitLonger API key with the environment variable `TWITLONGER_API_KEY`.
-
-## References
-
-[TODO]
+We do the same thing with the TwitLonger API key and the Redis To Go URL with the environment variables `TWITLONGER_API_KEY` and `REDISTOGO_URL`.
 
 ## License
 
-[TODO]
+MeFi Deleted is released under the [MIT License](http://www.opensource.org/licenses/MIT)
