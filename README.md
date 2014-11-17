@@ -4,6 +4,28 @@ A simple Twitter bot written to tweet MetaFilter post deletion reasons at [@mefi
 
 This bot was written to run at [Heroku](http://heroku.com/) and may be used as a simple example or starting point for other projects.
 
+## Elements
+
+Despite the small amount of code involved this application brings together a large number of technologies and services:
+
+1) **HTTP** retrieval and posting of content
+
+2) **RSS** to retrieve the list of deleted posts.
+
+3) **Nokogiri** to parse HTML in the RSS feed and extract the deletion reasons.
+
+4) **Twitter** to post the extracted deletion reason.
+
+5) **Redis** to keep track of which reasons have already been tweeted.
+
+6) **TwitLonger** to post deletion reasons exceeding 140 characters. 
+
+7) **OAuth** (specifically **OAuth Echo**) to authenticate the Twitter user and application to TwitLonger.
+
+8) **Heroku** for hosting, and of course
+
+9) **Git** and **GitHub** for both source code management and deployment.
+
 ## Requirements for Deploying Something Like This
 
 1) [Twitter account](#twitter-account)
