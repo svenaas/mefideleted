@@ -8,35 +8,35 @@ This bot was written to run at [Heroku](http://heroku.com/) and may be used as a
 
 Despite the small amount of code involved this application brings together a large number of technologies and services:
 
-1) **HTTP** retrieval and posting of content
+1. **HTTP** retrieval and posting of content
 
-2) **RSS** to retrieve the list of deleted posts.
+2. **RSS** to retrieve the list of deleted posts.
 
-3) **Nokogiri** to parse HTML in the RSS feed and extract the deletion reasons.
+3. **Nokogiri** to parse HTML in the RSS feed and extract the deletion reasons.
 
-4) **Twitter** to post the extracted deletion reason.
+4. **Twitter** to post the extracted deletion reason.
 
-5) **Redis** to keep track of which reasons have already been tweeted.
+5. **Redis** to keep track of which reasons have already been tweeted.
 
-6) **TwitLonger** to post deletion reasons exceeding 140 characters. 
+6. **TwitLonger** to post deletion reasons exceeding 140 characters. 
 
-7) **OAuth** (specifically **OAuth Echo**) to authenticate the Twitter user and application to TwitLonger.
+7. **OAuth** (specifically **OAuth Echo**) to authenticate the Twitter user and application to TwitLonger.
 
-8) **Heroku** for hosting, and of course
+8. **Heroku** for hosting, and of course
 
-9) **Git** and **GitHub** for both source code management and deployment.
+9. **Git** and **GitHub** for both source code management and deployment.
 
 ## Requirements for Deploying Something Like This
 
-1) [Twitter account](#twitter-account)
+1. [Twitter account](#twitter-account)
 
-2) [Twitter application](#twitter-application)
+2. [Twitter application](#twitter-application)
 
-3) [Twitter application keys](#twitter-application-keys)
+3. [Twitter application keys](#twitter-application-keys)
 
-4) [TwitLonger API Key](#twitlonger-api-key)
+4. [TwitLonger API Key](#twitlonger-api-key)
 
-5) [Heroku account](#heroku-account)
+5. [Heroku account](#heroku-account)
 
 ### Twitter Account
 
