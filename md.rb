@@ -71,6 +71,7 @@ end
 def twitlonger(status)
   # http://api.twitlonger.com/docs/endpoints
   uri = URI.parse('http://api.twitlonger.com/2/posts')
+  verification_uri = URI.parse('https://api.twitter.com/1.1/account/verify_credentials.json')
 
   request = Net::HTTP::Post.new(uri.path)
 
@@ -90,9 +91,8 @@ def twitlonger(status)
                 'oauth_token='            + ENV["OAUTH_TOKEN"]   + '&' + 
                 'oauth_version='          + '1.0'
 
-  base_string_uri = URI.parse('https://api.twitter.com/1.1/account/verify_credentials.json')
 
-  base_string = 'GET' + '&' + CGI::escape(base_string_uri.to_s) + '&' + CGI::escape(params)
+  base_string = 'GET' + '&' + CGI::escape(verification_uri.to_s) + '&' + CGI::escape(params)
   oauth_signature = sign(key, base_string)
 
   auth_header = 
