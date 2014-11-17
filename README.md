@@ -68,4 +68,4 @@ From your application's administration in Heroku you can then open up Heroku Sch
 
 ## License
 
-MeFi Deleted is released under the [MIT License](http://www.opensource.org/licenses/MIT)
+MeFi Deleted is released under the [MIT License](http://www.opensource.org/licenses/MIT).
