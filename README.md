@@ -60,6 +60,12 @@ In order to authenticate and post to Twitter this app needs to present several k
 
 We do the same thing with the TwitLonger API key and the Redis To Go URL with the environment variables `TWITLONGER_API_KEY` and `REDISTOGO_URL`.
 
+The current local repository can be depoyed to Heroku via git:
+
+    git push heroku master
+
+From your application's administration in Heroku you can then open up Heroku Scheduler and add a job to run it at the desired interval. To make @mefideleted work a Heroku Scheduler job calls `ruby md.rb run` once every 10 minutes.
+
 ## License
 
 MeFi Deleted is released under the [MIT License](http://www.opensource.org/licenses/MIT)
