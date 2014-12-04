@@ -9,7 +9,7 @@ require "securerandom"
 require 'cgi'
 require 'json'
 
-ATOM_URL = 'http://mefideleted.blogspot.com/feeds/posts/default'
+ATOM_URL = ENV["ATOM_URL"]
 
 @client = Twitter::REST::Client.new do |config|
   config.consumer_key        = ENV["CONSUMER_KEY"]
