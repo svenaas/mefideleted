@@ -26,7 +26,7 @@ def deletion_reasons
 
   reasons = feed.entries.each_with_object({}) do |entry, hash|    
     content = Nokogiri::HTML(entry.content.content)
-    content.css('span.reason').text =~ /(.*) (-- .*$)/
+    content.css('span.reason').text =~ /(.*) (-+ .*$)/
     reason = $1
     post_id = content.css('div.mefipost > a:first-of-type').text    
     hash[post_id] = reason
